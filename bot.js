@@ -35,8 +35,8 @@ async function analyzeSymbol(symbol) {
   }
 }
 
-// Analyse toutes les 5 minutes
-cron.schedule("55 * * * *", async () => {
+// Analyse toutes les heures a H+01min
+cron.schedule("1 * * * *", async () => {
   console.log("🔎 Lancement de l’analyse H1 pour toutes les cryptos...");
   fs.appendFileSync(
     logFilePath,
