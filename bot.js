@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fetchCandles } from "./lib/ccxtHelper.js";
 import { calculateHA } from "./lib/ha.js";
+import { isDoji } from "./lib/isDoji.js";
 import { calculateRSI } from "./lib/rsi.js";
 import { sendMessage } from "./lib/telegram.js";
 import { symbols } from "./lib/symbols.js";
@@ -22,16 +23,12 @@ async function analyzeSymbol(symbol) {
   const rsi = calculateRSI(lastClosePrices);
   const lastRSI = rsi[rsi.length - 1];
 
-  // Vérifier si la dernière bougie est un Doji
-  const isDoji =
-    Math.abs(lastCandle.close - lastCandle.open) /
-      (lastCandle.high - lastCandle.low) <
-    0.1;
+  const { isDoji: dojiDetected, debug } = isDoji(lastCandle);
 
-  if (isDoji && lastRSI < 30) {
+  if (dojiDetected && lastRSI < 30) {
     const message = `🚨 ${symbolForTG(
       symbol
-    )} : Doji détecté avec RSI = ${lastRSI.toFixed(2)}`;
+    )} - Doji détecté (RSI = ${lastRSI.toFixed(2)})\n${debug}`;
     sendMessage(message);
   } else {
     return null; // Pas de signal
