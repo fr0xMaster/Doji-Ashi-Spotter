@@ -14,7 +14,7 @@ const logFilePath = path.resolve("./error.log"); // Fichier de log
 
 async function analyzeSymbol(symbol) {
   const tf = "1h";
-  // Récupération des 100 dernières bougies pour le calcul du RSI
+  // Récupération des 50 dernières bougies pour le calcul du RSI
   const candles = await fetchCandles(symbol, tf, 50);
   const haCandles = calculateHA(candles);
 
