@@ -29,7 +29,7 @@ async function analyzeSymbol(symbol) {
     const message = `🚨 ${symbolForTG(
       symbol
     )} - Doji détecté (RSI = ${lastRSI.toFixed(2)})\n${debug}`;
-    sendMessage(message);
+    return message;
   } else {
     return null; // Pas de signal
   }
