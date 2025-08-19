@@ -55,7 +55,7 @@ cron.schedule("*/5 * * * *", async () => {
       // Écriture dans le fichier log
       fs.appendFileSync(
         logFilePath,
-        `[${new Date().toISOString()}] ${errorMessage}\n`
+        `[${new Date().toISOString()}] ${error.message}\n`
       );
       sendMessage(`⚠️ Erreur sur ${symbolForTG(symbol)} : ${error.message}`);
       continue;
