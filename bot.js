@@ -1,40 +1,27 @@
-const SYMBOLS = ["BTC/USDT", "ETH/USDT", "BNB/USDT"];
-const TIMEFRAME = "1h";
-const LIMIT = 50;
-const INTERVAL_MIN = 30;
+import { fetchCandles } from "./lib/ccxtHelper.js";
+import { calculateHA, detectDoji } from "./lib/ha.js";
+import { calculateRSI } from "./lib/rsi.js";
+import { sendMessage } from "./lib/telegram.js";
 
-const { fetchData } = require("./lib/fetchData");
-const { toHeikinAshi } = require("./lib/heikinAshi");
-const { isDoji } = require("./lib/doji");
-const { computeRSI } = require("./lib/rsi");
-const { generateChartWithRSI } = require("./lib/chart");
-const { sendTelegram } = require("./lib/telegram");
+async function main() {
+  const symbol = "BTC/USDT";
+  const candles = await fetchCandles(symbol, "1h", 50);
+  const haCandles = calculateHA(candles);
 
-async function runBotMultiAssets() {
-  for (let symbol of SYMBOLS) {
-    try {
-      const candles = await fetchData(symbol, TIMEFRAME, LIMIT);
-      const haCandles = toHeikinAshi(candles);
-      const last = haCandles[haCandles.length - 1];
+  const dojis = detectDoji(haCandles);
+  const rsi = calculateRSI(haCandles.map((c) => c.close));
 
-      let signal = `Pas de doji sur ${symbol}`;
-      if (isDoji(last)) {
-        signal = `📌 Doji détecté sur ${symbol} (${TIMEFRAME})`;
-      }
-
-      const chartPath = await generateChartWithRSI(
-        haCandles.slice(-50),
-        symbol
-      );
-      await sendTelegram(signal, chartPath);
-    } catch (err) {
-      console.error(`Erreur pour ${symbol} :`, err);
-    }
+  if (dojis.length > 0) {
+    sendMessage(
+      `🚨 Doji détecté sur ${symbol}! Dernier RSI: ${rsi[
+        rsi.length - 1
+      ].toFixed(2)}`
+    );
+  } else {
+    sendMessage(
+      `Pas de Doji pour ${symbol}. RSI: ${rsi[rsi.length - 1].toFixed(2)}`
+    );
   }
 }
 
-// Lancement manuel
-runBotMultiAssets();
-
-// Lancement automatique toutes les X minutes
-setInterval(runBotMultiAssets, INTERVAL_MIN * 60 * 1000);
+main();
