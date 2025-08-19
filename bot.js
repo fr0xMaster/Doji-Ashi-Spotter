@@ -3,9 +3,7 @@ import { fetchCandles } from "./lib/ccxtHelper.js";
 import { calculateHA } from "./lib/ha.js";
 import { calculateRSI } from "./lib/rsi.js";
 import { sendMessage } from "./lib/telegram.js";
-
-// Liste des cryptos à analyser
-const symbols = ["BTC/USDT", "ETH/USDT", "BNB/USDT"];
+import { symbols } from ".lib/symbols.js";
 
 async function analyzeSymbol(symbol) {
   const tf = "1h";
@@ -27,17 +25,20 @@ async function analyzeSymbol(symbol) {
   if (isDoji && lastRSI < 30) {
     const message = `🚨 ${symbol} - ${tf} : Doji détecté sur la dernière bougie avec RSI = ${lastRSI.toFixed(
       2
-    )} (survendu)`;
+    )}`;
     sendMessage(message);
   } else {
-    sendMessage(`Pas de Doji pour ${symbol} sur Timeframe  ${tf} . RSI:`);
+    sendMessage(
+      `Pas de Doji pour ${symbol} sur UT ${tf} . RSI: ${lastRSI.toFixed(2)}`
+    );
   }
 }
 
 // Planifier l'analyse toutes les heures à la minute 55
-cron.schedule("55 * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
   console.log("🔎 Lancement de l’analyse H1 pour toutes les cryptos...");
   for (const symbol of symbols) {
-    await analyzeSymbol(symbol);
+    const symbolFormattedForHL = symbol + "/USDC:USDC";
+    await analyzeSymbol(symbolFormattedForHL);
   }
 });
