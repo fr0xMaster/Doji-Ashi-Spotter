@@ -15,7 +15,7 @@ const logFilePath = path.resolve("./error.log"); // Fichier de log
 async function analyzeSymbol(symbol) {
   const tf = "1h";
   // Récupération des 50 dernières bougies pour le calcul du RSI
-  const candles = await fetchCandles(symbol, tf, 50);
+  const candles = await fetchCandles(symbol, tf, 20);
   const haCandles = calculateHA(candles);
 
   const lastCandle = haCandles[haCandles.length - 1];
@@ -23,20 +23,21 @@ async function analyzeSymbol(symbol) {
   const rsi = calculateRSI(lastClosePrices);
   const lastRSI = rsi[rsi.length - 1];
 
-  const { isDoji: dojiDetected, debug } = isDoji(lastCandle);
+  const { isDoji: dojiDetected, details } = isDoji(lastCandle);
 
   if (dojiDetected && lastRSI < 30) {
     const message = `🚨 ${symbolForTG(
       symbol
-    )} - Doji détecté (RSI = ${lastRSI.toFixed(2)})\n${debug}`;
+    )} - Doji détecté (RSI = ${lastRSI.toFixed(2)})\n${details}`;
     return message;
   } else {
     return null; // Pas de signal
   }
 }
 
-// Analyse toutes les heures a H+01min
-cron.schedule("1 * * * *", async () => {
+// Analyse toutes les heures a H+01min "1 * * * *"
+cron.schedule("*/5 * * * *", async () => {
+  const startTime = Date.now();
   console.log("🔎 Lancement de l’analyse H1 pour toutes les cryptos...");
   fs.appendFileSync(
     logFilePath,
@@ -62,8 +63,9 @@ cron.schedule("1 * * * *", async () => {
       continue;
     }
   }
-
-  const summary = buildSummary(results, errors, totalAnalyzed);
+  const endTime = Date.now();
+  const duration = ((endTime - startTime) / 1000).toFixed(2); // en secondes
+  const summary = buildSummary(results, errors, totalAnalyzed, duration);
   sendMessage(summary);
   console.log(summary);
   fs.appendFileSync(logFilePath, `[${new Date().toISOString()}] ${summary}\n`);

@@ -31,3 +31,53 @@ Aucun signal détecté.
 ✅ Aucun signal détecté.
 
 
+[2025-08-19T19:01:00.021Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-19T19:05:52.755Z] 📊 Résumé Analyse H1 (21:05:52):
+- Cryptos analysées : 58
+- Signaux détectés : 0
+- Erreurs : 0
+
+✅ Aucun signal détecté.
+
+
+[2025-08-20T05:10:00.018Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T05:14:39.966Z] 📊 Résumé Analyse H1 (07:14:39):
+- Cryptos analysées : 58
+- Signaux détectés : 1
+- Erreurs : 0
+
+🚨 ADA - Doji détecté (RSI = 27.39)
+Open=0.8507087823530491, Close=0.8514575000000001, High=0.85416, Low=0.84616, Body=0.0007, Range=0.0080, Ratio=0.0936, Threshold=0.1
+
+
+[2025-08-20T05:15:00.029Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T05:19:39.279Z] 📊 Résumé Analyse H1 (07:19:39):
+- Cryptos analysées : 58
+- Signaux détectés : 1
+- Erreurs : 0
+
+🚨 ADA - Doji détecté (RSI = 27.39)
+Open=0.8507087823530491, Close=0.8514575000000001, High=0.85416, Low=0.84616, Body=0.0007, Range=0.0080, Ratio=0.0936, Threshold=0.1
+
+
+[2025-08-20T05:20:00.044Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T05:24:30.987Z] 📊 Résumé Analyse H1 (07:24:30):
+- Cryptos analysées : 58
+- Signaux détectés : 1
+- Erreurs : 0
+
+🚨 ADA - Doji détecté (RSI = 27.39)
+Open=0.8507087823530491, Close=0.8514575000000001, High=0.85416, Low=0.84616, Body=0.0007, Range=0.0080, Ratio=0.0936, Threshold=0.1
+
+
+[2025-08-20T05:25:00.023Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T07:00:00.031Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T07:04:40.116Z] 📊 Résumé Analyse H1 (09:04:40):
+- Cryptos analysées : 58
+- Signaux détectés : 0
+- Erreurs : 0
+
+✅ Aucun signal détecté.
+
+
+[2025-08-20T07:05:00.017Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
