@@ -11,12 +11,12 @@ import { shouldRun3D } from "./lib/scheduler.js";
 const logFilePath = path.resolve("./error.log"); // Fichier de log
 
 const jobs = [
-  { tf: "1h", cron: "0 * * * *", label: "H1" }, // bon cron a remettre apres les tests => "0 * * * *"
-  { tf: "4h", cron: "0 2,6,10,14,18,22 * * *", label: "H4" },
-  { tf: "12h", cron: "0 2,14 * * *", label: "H12" },
-  { tf: "1d", cron: "0 2 * * *", label: "1D" },
-  { tf: "3d", cron: "0 2 * * *", label: "3D", is3D: true },
-  { tf: "1w", cron: "0 2 * * 1", label: "1W" },
+  { tf: "1h", cron: "59 * * * *", label: "H1" }, // 23:59, 0:59, 1:59, …
+  { tf: "4h", cron: "58 1,5,9,13,17,21 * * *", label: "H4" }, // 1:58, 5:58, 9:58, …
+  { tf: "12h", cron: "57 1,13 * * *", label: "H12" }, // 1:57, 13:57
+  { tf: "1d", cron: "56 1 * * *", label: "1D" }, // tous les jours à 1:56
+  { tf: "3d", cron: "55 1 * * *", label: "3D", is3D: true }, // tous les 3 jours à 1:55 (scheduler vérifie le jour)
+  { tf: "1w", cron: "54 1 * * 1", label: "1W" }, // tous les lundis à 1:54
 ];
 
 for (const job of jobs) {
