@@ -11,7 +11,7 @@ import { shouldRun3D } from "./lib/scheduler.js";
 const logFilePath = path.resolve("./error.log"); // Fichier de log
 
 const jobs = [
-  { tf: "1h", cron: "0 * * * *", label: "H1" },
+  { tf: "1h", cron: "*/5 * * * *", label: "H1" }, // bon cron a remettre apres les tests => "0 * * * *"
   { tf: "4h", cron: "0 2,6,10,14,18,22 * * *", label: "H4" },
   { tf: "12h", cron: "0 2,14 * * *", label: "H12" },
   { tf: "1d", cron: "0 2 * * *", label: "1D" },
@@ -55,7 +55,13 @@ for (const job of jobs) {
     const endTime = Date.now();
     const duration = ((endTime - startTime) / 1000).toFixed(2);
 
-    const summary = buildSummary(results, tf, errors, totalAnalyzed, duration);
+    const summary = buildSummary(
+      results,
+      job.tf,
+      errors,
+      totalAnalyzed,
+      duration
+    );
     sendMessage(summary);
     console.log(summary);
     fs.appendFileSync(
