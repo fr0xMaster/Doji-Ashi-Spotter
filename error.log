@@ -220,3 +220,29 @@ Open=0.4877, Close=0.4875, High=0.4892, Low=0.4862, Body=0.0002, Range=0.0030, R
 ⚖️ OP - Doji NEUTRE détecté (RSI = 42.83)
 Open=0.7079, Close=0.7080, High=0.7113, Low=0.7057, Body=0.0001, Range=0.0056, Ratio=0.0140
 [2025-08-20T07:55:00.039Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T08:00:00.039Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T08:04:46.015Z] 📊 Résumé Analyse H1 (10:04:46):
+- Analyse effectuée en 285.97s
+- Cryptos analysées : 58
+- Signaux détectés : 2
+- Erreurs : 0
+
+⚖️ **Dojis neutres détectés**:
+⚖️ LDO - Doji NEUTRE détecté - RSI = 50.50 - Doji Size (%) =8.9472%
+⚖️ TRUMP - Doji NEUTRE détecté - RSI = 32.08 - Doji Size (%) =3.0477%
+[2025-08-20T08:05:00.022Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T08:09:40.676Z] 📊 Résumé Analyse H1 (10:09:40):
+- Analyse effectuée en 280.65s
+- Cryptos analysées : 58
+- Signaux détectés : 5
+- Erreurs : 0
+
+🚀 **Dojis haussiers détectés**:
+🚀 FIL - Doji HAUSSIER détecté - RSI = 29.35 - Doji Size (%) =6.2492%
+
+⚖️ **Dojis neutres détectés**:
+⚖️ GRASS - Doji NEUTRE détecté - RSI = 66.16 - Doji Size (%) =9.8411%
+⚖️ ORDI - Doji NEUTRE détecté - RSI = 37.82 - Doji Size (%) =2.3655%
+⚖️ TRUMP - Doji NEUTRE détecté - RSI = 32.16 - Doji Size (%) =1.8588%
+⚖️ TRX - Doji NEUTRE détecté - RSI = 41.47 - Doji Size (%) =0.5036%
+[2025-08-20T08:10:00.032Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...

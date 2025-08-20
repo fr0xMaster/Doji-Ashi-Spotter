@@ -6,41 +6,61 @@ import { sendMessage } from "./lib/telegram.js";
 import { symbols } from "./lib/symbols.js";
 import { symbolForHL, symbolForTG } from "./lib/format.js";
 import { buildSummary } from "./lib/summary.js";
+import { shouldRun3D } from "./lib/scheduler.js";
 
 const logFilePath = path.resolve("./error.log"); // Fichier de log
 
-// Analyse toutes les heures a H+01min "1 * * * *"
-cron.schedule("*/5 * * * *", async () => {
-  const startTime = Date.now();
-  console.log("🔎 Lancement de l’analyse H1 pour toutes les cryptos...");
-  fs.appendFileSync(
-    logFilePath,
-    `[${new Date().toISOString()}] ${"🔎 Lancement de l’analyse H1 pour toutes les cryptos..."}\n`
-  );
+const jobs = [
+  { tf: "1h", cron: "1 * * * *", label: "H1" },
+  { tf: "4h", cron: "1 2,6,10,14,18,22 * * *", label: "H4" },
+  { tf: "12h", cron: "1 2,14 * * *", label: "H12" },
+  { tf: "1d", cron: "1 2 * * *", label: "1D" },
+  { tf: "3d", cron: "1 2 * * *", label: "3D", is3D: true },
+  { tf: "1w", cron: "1 2 * * 1", label: "1W" },
+];
 
-  const results = [];
-  const errors = [];
-  let totalAnalyzed = 0;
-  for (const symbol of symbols) {
-    try {
-      totalAnalyzed++;
-      const signal = await analyzeSymbol(symbolForHL(symbol));
-      if (signal) results.push(signal);
-    } catch (error) {
-      console.error(`⚠️ Erreur sur ${symbolForTG(symbol)} :`, error.message);
-      // Écriture dans le fichier log
-      fs.appendFileSync(
-        logFilePath,
-        `[${new Date().toISOString()}] ${error.message}\n`
-      );
-      errors.push(errorMessage);
-      continue;
+for (const job of jobs) {
+  cron.schedule(job.cron, async () => {
+    if (job.is3D && !shouldRun3D()) {
+      console.log("⏭️ Analyse 3D ignorée aujourd’hui (pas le bon jour).");
+      return;
     }
-  }
-  const endTime = Date.now();
-  const duration = ((endTime - startTime) / 1000).toFixed(2); // en secondes
-  const summary = buildSummary(results, errors, totalAnalyzed, duration);
-  sendMessage(summary);
-  console.log(summary);
-  fs.appendFileSync(logFilePath, `[${new Date().toISOString()}] ${summary}\n`);
-});
+
+    const startTime = Date.now();
+    console.log(`🔎 Lancement de l’analyse ${job.label}...`);
+    fs.appendFileSync(
+      logFilePath,
+      `[${new Date().toISOString()}] ${`🔎 Lancement de l’analyse ${job.label}...`}\n`
+    );
+    const results = [];
+    const errors = [];
+    let totalAnalyzed = 0;
+
+    for (const symbol of symbols) {
+      try {
+        totalAnalyzed++;
+        const signal = await analyzeSymbol(symbolForHL(symbol), job.tf);
+        if (signal) results.push(signal);
+      } catch (error) {
+        console.error(`⚠️ Erreur sur ${symbolForTG(symbol)} :`, error.message);
+        fs.appendFileSync(
+          logFilePath,
+          `[${new Date().toISOString()}] ${error.message}\n`
+        );
+        errors.push(error.message);
+        continue;
+      }
+    }
+
+    const endTime = Date.now();
+    const duration = ((endTime - startTime) / 1000).toFixed(2);
+
+    const summary = buildSummary(results, tf, errors, totalAnalyzed, duration);
+    sendMessage(summary);
+    console.log(summary);
+    fs.appendFileSync(
+      logFilePath,
+      `[${new Date().toISOString()}] ${summary}\n`
+    );
+  });
+}
