@@ -20,53 +20,62 @@ const jobs = [
 ];
 
 for (const job of jobs) {
-  cron.schedule(job.cron, async () => {
-    if (job.is3D && !shouldRun3D()) {
-      console.log("⏭️ Analyse 3D ignorée aujourd’hui (pas le bon jour).");
-      return;
-    }
-
-    const startTime = Date.now();
-    console.log(`🔎 Lancement de l’analyse ${job.label}...`);
-    fs.appendFileSync(
-      logFilePath,
-      `[${new Date().toISOString()}] ${`🔎 Lancement de l’analyse ${job.label}...`}\n`
-    );
-    const results = [];
-    const errors = [];
-    let totalAnalyzed = 0;
-
-    for (const symbol of symbols) {
-      try {
-        totalAnalyzed++;
-        const signal = await analyzeSymbol(symbolForHL(symbol), job.tf);
-        if (signal) results.push(signal);
-      } catch (error) {
-        console.error(`⚠️ Erreur sur ${symbolForTG(symbol)} :`, error.message);
-        fs.appendFileSync(
-          logFilePath,
-          `[${new Date().toISOString()}] ${error.message}\n`
-        );
-        errors.push(error.message);
-        continue;
+  cron.schedule(
+    job.cron,
+    async () => {
+      if (job.is3D && !shouldRun3D()) {
+        console.log("⏭️ Analyse 3D ignorée aujourd’hui (pas le bon jour).");
+        return;
       }
+
+      const startTime = Date.now();
+      console.log(`🔎 Lancement de l’analyse ${job.label}...`);
+      fs.appendFileSync(
+        logFilePath,
+        `[${new Date().toISOString()}] ${`🔎 Lancement de l’analyse ${job.label}...`}\n`
+      );
+      const results = [];
+      const errors = [];
+      let totalAnalyzed = 0;
+
+      for (const symbol of symbols) {
+        try {
+          totalAnalyzed++;
+          const signal = await analyzeSymbol(symbolForHL(symbol), job.tf);
+          if (signal) results.push(signal);
+        } catch (error) {
+          console.error(
+            `⚠️ Erreur sur ${symbolForTG(symbol)} :`,
+            error.message
+          );
+          fs.appendFileSync(
+            logFilePath,
+            `[${new Date().toISOString()}] ${error.message}\n`
+          );
+          errors.push(error.message);
+          continue;
+        }
+      }
+
+      const endTime = Date.now();
+      const duration = ((endTime - startTime) / 1000).toFixed(2);
+
+      const summary = buildSummary(
+        results,
+        job.tf,
+        errors,
+        totalAnalyzed,
+        duration
+      );
+      sendMessage(summary);
+      console.log(summary);
+      fs.appendFileSync(
+        logFilePath,
+        `[${new Date().toISOString()}] ${summary}\n`
+      );
+    },
+    {
+      timezone: "Europe/Paris", // Force les heures françaises
     }
-
-    const endTime = Date.now();
-    const duration = ((endTime - startTime) / 1000).toFixed(2);
-
-    const summary = buildSummary(
-      results,
-      job.tf,
-      errors,
-      totalAnalyzed,
-      duration
-    );
-    sendMessage(summary);
-    console.log(summary);
-    fs.appendFileSync(
-      logFilePath,
-      `[${new Date().toISOString()}] ${summary}\n`
-    );
-  });
+  );
 }
