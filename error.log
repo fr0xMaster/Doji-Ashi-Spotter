@@ -81,3 +81,13 @@ Open=0.8507087823530491, Close=0.8514575000000001, High=0.85416, Low=0.84616, Bo
 
 
 [2025-08-20T07:05:00.017Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
+[2025-08-20T07:09:31.316Z] 📊 Résumé Analyse H1 (09:09:31):
+- Cryptos analysées : 58
+- Signaux détectés : 1
+- Erreurs : 0
+
+🚨 ADA - Doji détecté (RSI = 10.37)
+Open=0.8506478127717972, Close=0.8505950000000001, High=0.85267, Low=0.84951, Body=0.0001, Range=0.0032, Ratio=0.0167, Threshold=0.1
+
+
+[2025-08-20T07:10:00.049Z] 🔎 Lancement de l’analyse H1 pour toutes les cryptos...
