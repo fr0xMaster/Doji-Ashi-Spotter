@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import cron from "node-cron";
 import fs from "fs";
 import path from "path";
@@ -8,7 +9,9 @@ import { symbolForHL, symbolForTG } from "./lib/format.js";
 import { buildSummary } from "./lib/summary.js";
 import { shouldRun3D } from "./lib/scheduler.js";
 
+dotenv.config();
 const logFilePath = path.resolve("./error.log"); // Fichier de log
+console.log(`🚀 Lancement du bot en mode ${process.env.NODE_ENV}`);
 
 const jobs = [
   { tf: "1h", cron: "59 * * * *", label: "H1" }, // 23:59, 0:59, 1:59, …
