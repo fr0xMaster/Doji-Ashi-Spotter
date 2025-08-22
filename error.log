@@ -369,3 +369,16 @@ Open=0.7079, Close=0.7080, High=0.7113, Low=0.7057, Body=0.0001, Range=0.0056, R
 
 ⚖️ **Dojis neutres détectés**:
 ⚖️ AVAX - Doji NEUTRE détecté - RSI = 52.71 - Doji Size (%) =7.27% - Doji Size ($) =0.0009$
+[2025-08-20T10:59:00.032Z] 🔎 Lancement de l’analyse H1...
+[2025-08-20T11:03:36.322Z] 📊 Résumé Analyse 1h (13:03:36):
+- Analyse effectuée en 276.28s
+- Cryptos analysées : 58
+- Signaux détectés : 3
+- Erreurs : 0
+
+🚀 **Dojis haussiers détectés**:
+🚀 ADA - Doji HAUSSIER détecté - RSI = 28.15 - Doji Size (%) =3.70% - Doji Size ($) =0.0003$
+
+⚖️ **Dojis neutres détectés**:
+⚖️ BTC - Doji NEUTRE détecté - RSI = 48.80 - Doji Size (%) =4.77% - Doji Size ($) =14.2494$
+⚖️ JTO - Doji NEUTRE détecté - RSI = 59.39 - Doji Size (%) =2.06% - Doji Size ($) =0.0002$
